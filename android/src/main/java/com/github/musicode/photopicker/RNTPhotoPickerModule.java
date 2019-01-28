@@ -2,6 +2,7 @@ package com.github.musicode.photopicker;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
@@ -11,19 +12,24 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.github.herokotlin.photopicker.PhotoPickerActivity;
 import com.github.herokotlin.photopicker.PhotoPickerCallback;
 import com.github.herokotlin.photopicker.PhotoPickerConfiguration;
+import com.github.herokotlin.photopicker.PhotoPickerManager;
 import com.github.herokotlin.photopicker.model.PickedAsset;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
 import kotlin.jvm.functions.Function5;
 
 public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
@@ -47,7 +53,7 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void open(int maxSelectCount, Boolean countable, final Promise promise) {
+    public void open(ReadableMap options, final Promise promise) {
 
         PhotoPickerConfiguration configuration = new PhotoPickerConfiguration() {
             @Override
@@ -56,10 +62,8 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
             }
 
             @Override
-            public boolean requestPermissions(List<String> permissions, int requestCode) {
+            public boolean requestPermissions(Activity activity, List<String> permissions, int requestCode) {
                 List<String> list = new ArrayList<>();
-
-                Activity activity = reactContext.getCurrentActivity();
 
                 for (String permission: permissions) {
                     if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -68,20 +72,19 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
                 }
 
                 if (list.size() > 0) {
-                    if (activity instanceof ReactActivity) {
-                        ((ReactActivity)activity).requestPermissions(list.toArray(new String[list.size()]), requestCode, null);
-                    }
-                    else if (activity instanceof PermissionAwareActivity) {
-                        ((PermissionAwareActivity)activity).requestPermissions(list.toArray(new String[list.size()]), requestCode, null);
-                    }
+                    ActivityCompat.requestPermissions(activity, list.toArray(new String[list.size()]), requestCode);
                     return false;
                 }
 
                 return true;
             }
         };
-        configuration.setMaxSelectCount(maxSelectCount);
-        configuration.setCountable(countable);
+
+        configuration.setCountable(options.getBoolean("countable"));
+        configuration.setMaxSelectCount(options.getInt("maxSelectCount"));
+        configuration.setImageMinWidth(options.getInt("imageMinWidth"));
+        configuration.setImageMinHeight(options.getInt("imageMinHeight"));
+        configuration.setRawButtonVisible(options.getBoolean("rawButtonVisible"));
 
         PhotoPickerCallback callback = new PhotoPickerCallback() {
 
@@ -113,6 +116,7 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onSubmit(Activity activity, List<PickedAsset> list) {
+
                 activity.finish();
 
                 WritableArray array = Arguments.createArray();
@@ -126,12 +130,13 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
                     map.putInt("width", asset.getWidth());
                     map.putInt("height", asset.getHeight());
                     map.putBoolean("isVideo", asset.isVideo());
-                    map.putBoolean("isRaw", asset.isFull());
+                    map.putBoolean("isRaw", asset.isRaw());
 
                     array.pushMap(map);
                 }
 
                 promise.resolve(array);
+
             }
         };
 

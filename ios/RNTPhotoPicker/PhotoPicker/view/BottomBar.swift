@@ -94,7 +94,12 @@ public class BottomBar: UIView {
 
         backgroundColor = configuration.bottomBarBackgroundColor
         
-        rawButton.addTarget(self, action: #selector(onRawClick), for: .touchUpInside)
+        if configuration.rawButtonVisible {
+            rawButton.addTarget(self, action: #selector(onRawClick), for: .touchUpInside)
+        }
+        else {
+            rawButton.isHidden = true
+        }
         
     }
     

@@ -43,8 +43,7 @@
 
 RCT_EXPORT_MODULE(RNTPhotoPicker);
 
-RCT_EXPORT_METHOD(open:(int)maxSelectCount
-                  countable:(BOOL)countable
+RCT_EXPORT_METHOD(open:(NSDictionary*)options
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
 
@@ -54,9 +53,13 @@ RCT_EXPORT_METHOD(open:(int)maxSelectCount
     PhotoPickerViewController *controller = [PhotoPickerViewController new];
 
     PhotoPickerConfiguration *configuration = [PhotoPickerConfiguration new];
-    configuration.maxSelectCount = maxSelectCount;
-    configuration.countable = countable;
 
+    configuration.countable = [RCTConvert BOOL:options[@"countable"]];
+    configuration.maxSelectCount = [RCTConvert int:options[@"maxSelectCount"]];
+    configuration.imageMinWidth = [RCTConvert int:options[@"imageMinWidth"]];
+    configuration.imageMinHeight = [RCTConvert int:options[@"imageMinHeight"]];
+    configuration.rawButtonVisible = [RCTConvert BOOL:options[@"rawButtonVisible"]];
+    
     controller.delegate = self;
     controller.configuration = configuration;
 

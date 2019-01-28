@@ -251,6 +251,15 @@ import Photos
     // 最大支持的多选数量
     @objc public var maxSelectCount = 9
     
+    // 图片的最小宽度
+    @objc public var imageMinWidth = 0
+    
+    // 图片的最大高度
+    @objc public var imageMinHeight = 0
+    
+    // 是否显示原图按钮
+    @objc public var rawButtonVisible = true
+    
     //
     // MARK: - 各种选项
     //
@@ -320,7 +329,7 @@ import Photos
     }
     
     open func filterAsset(width: Int, height: Int, type: AssetType) -> Bool {
-        return width > 44 && height > 44
+        return width > imageMinWidth && height > imageMinHeight
     }
     
 }
