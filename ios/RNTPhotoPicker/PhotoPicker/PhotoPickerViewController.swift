@@ -213,7 +213,9 @@ public class PhotoPickerViewController: UIViewController {
             guard manager.scan() else {
                 return
             }
-            self.setup()
+            DispatchQueue.main.async {
+                self.setup()
+            }
         }
         
         manager.onPermissionsGranted = {

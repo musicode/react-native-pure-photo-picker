@@ -137,7 +137,6 @@ class PhotoPickerManager: NSObject {
         
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: configuration.assetSortField, ascending: configuration.assetSortAscending)]
-        options.predicate = NSPredicate(format: "mediaType IN %@", configuration.assetMediaTypes)
         
         return PHAsset.fetchAssets(in: album, options: options)
         
@@ -210,8 +209,12 @@ class PhotoPickerManager: NSObject {
     }
 
     func getPixelSize(size: CGSize) -> CGSize {
+        // https://stackoverflow.com/questions/31037859/phimagemanager-requestimageforasset-returns-nil-sometimes-for-icloud-photos
+        // 如果是 3，有时会拉取不到高清图片，所以求值之后减掉几个像素
         let scale = UIScreen.main.scale
-        return CGSize(width: size.width * scale, height: size.height * scale)
+        let width = size.width * scale - 5
+        let height = size.height * scale - 5
+        return CGSize(width: width, height: height)
     }
     
     // size 是像素单位
