@@ -210,10 +210,9 @@ class PhotoPickerManager: NSObject {
 
     func getPixelSize(size: CGSize) -> CGSize {
         // https://stackoverflow.com/questions/31037859/phimagemanager-requestimageforasset-returns-nil-sometimes-for-icloud-photos
-        // 如果是 3，有时会拉取不到高清图片，所以求值之后减掉几个像素
         let scale = UIScreen.main.scale
-        let width = size.width * scale - 5
-        let height = size.height * scale - 5
+        let width = size.width * scale
+        let height = size.height * scale
         return CGSize(width: width, height: height)
     }
     
@@ -230,29 +229,17 @@ class PhotoPickerManager: NSObject {
         cacheManager.cancelImageRequest(requestID)
     }
     
-    // size 是像素单位
-    func startCachingImages(assets: [PHAsset], size: CGSize, options: PHImageRequestOptions) {
-        cacheManager.startCachingImages(for: assets, targetSize: size, contentMode: .aspectFill, options: options)
-    }
-    
-    // size 是像素单位
-    func stopCachingImages(assets: [PHAsset], size: CGSize, options: PHImageRequestOptions) {
-        cacheManager.stopCachingImages(for: assets, targetSize: size, contentMode: .aspectFill, options: options)
-    }
-    
-    func stopAllCachingImages() {
-        cacheManager.stopCachingImagesForAllAssets()
-    }
-    
     func getAssetURL(asset: PHAsset, callback: @escaping (URL?) -> Void) {
         if asset.mediaType == .image {
             let options = PHContentEditingInputRequestOptions()
-            asset.requestContentEditingInput(with: options) { contentEditingInput, _ in
+            options.isNetworkAccessAllowed = true
+            asset.requestContentEditingInput(with: options) { contentEditingInput, info in
                 callback(contentEditingInput?.fullSizeImageURL)
             }
         }
         else if asset.mediaType == .video {
             let options = PHVideoRequestOptions()
+            options.isNetworkAccessAllowed = true
             options.version = .original
             cacheManager.requestAVAsset(forVideo: asset, options: options) { asset, _, _ in
                 if let urlAsset = asset as? AVURLAsset {

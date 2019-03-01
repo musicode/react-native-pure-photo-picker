@@ -268,6 +268,8 @@ import Photos
     @objc public lazy var albumPosterRequestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.resizeMode = .exact
+        options.isSynchronous = false
+        options.isNetworkAccessAllowed = true
         return options
     }()
 
@@ -276,7 +278,7 @@ import Photos
         let options = PHImageRequestOptions()
         options.resizeMode = .exact
         options.isSynchronous = false
-        options.isNetworkAccessAllowed = false
+        options.isNetworkAccessAllowed = true
         return options
     }()
 

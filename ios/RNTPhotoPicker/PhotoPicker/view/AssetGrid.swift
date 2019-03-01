@@ -44,8 +44,6 @@ public class AssetGrid: UIView {
     
     private var cellPixelSize: CGSize!
     
-    private var previousPreheatRect = CGRect.zero
-    
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         
         let view = UICollectionViewFlowLayout()
@@ -96,7 +94,6 @@ public class AssetGrid: UIView {
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-        PhotoPickerManager.shared.stopAllCachingImages()
     }
     
     public func scrollToBottom(animated: Bool) {
@@ -160,10 +157,6 @@ extension AssetGrid: UICollectionViewDelegate {
         onAssetClick?(asset)
     }
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateCachedAssets()
-    }
-    
 }
 
 extension AssetGrid: UICollectionViewDelegateFlowLayout {
@@ -209,37 +202,6 @@ extension AssetGrid: PHPhotoLibraryChangeObserver {
 }
 
 extension AssetGrid {
-    
-    private func updateCachedAssets() {
-
-        // The preheat window is twice the height of the visible rect.
-        let visibleSize = collectionView.bounds.size
-        let visibleRect = CGRect(origin: collectionView.contentOffset, size: visibleSize)
-        let preheatRect = visibleRect.insetBy(dx: 0, dy: -0.5 * visibleRect.height)
-        
-        // Update only if the visible area is significantly different from the last preheated area.
-        let delta = abs(preheatRect.midY - previousPreheatRect.midY)
-        guard delta > visibleSize.height / 3 else { return }
-        
-        // Compute the assets to start caching and to stop caching.
-        let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
-        
-        let addedAssets = addedRects
-            .flatMap { rect in indexPathsForElements(rect: rect) }
-            .map { indexPath in fetchResult[indexPath.item] }
-
-        let removedAssets = removedRects
-            .flatMap { rect in indexPathsForElements(rect: rect) }
-            .map { indexPath in fetchResult[indexPath.item] }
-        
-        // Update the assets the PHCachingImageManager is caching.
-        PhotoPickerManager.shared.startCachingImages(assets: addedAssets, size: cellPixelSize, options: configuration.assetThumbnailRequestOptions)
-        PhotoPickerManager.shared.stopCachingImages(assets: removedAssets, size: cellPixelSize, options: configuration.assetThumbnailRequestOptions)
-        
-        // Store the preheat rect to compare against in the future.
-        previousPreheatRect = preheatRect
-        
-    }
     
     private func indexPathsForElements(rect: CGRect) -> [IndexPath] {
         let allLayoutAttributes = flowLayout.layoutAttributesForElements(in: rect)!
