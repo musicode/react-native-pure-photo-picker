@@ -6,30 +6,24 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.github.herokotlin.photopicker.PhotoPickerActivity;
 import com.github.herokotlin.photopicker.PhotoPickerCallback;
 import com.github.herokotlin.photopicker.PhotoPickerConfiguration;
-import com.github.herokotlin.photopicker.PhotoPickerManager;
 import com.github.herokotlin.photopicker.model.PickedAsset;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function2;
 import kotlin.jvm.functions.Function5;
 
 public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
