@@ -352,9 +352,6 @@ public class PhotoPickerViewController: UIViewController {
                 if let url = url {
                     
                     var path = url.absoluteString
-                    print("------")
-                    print(path)
-                    print("------")
                     if path.hasPrefix(urlPrefix) {
                         path = NSString(string: path).substring(from: urlPrefix.count)
                     }

@@ -174,17 +174,12 @@ class PhotoPickerManager: NSObject {
         
         albumList.forEach { album in
             
-            guard let title = album.localizedTitle else {
-                return
-            }
-            
             let fetchResult = fetchAssetList(album: album, configuration: configuration)
             let assetList = fetchResult2List(fetchResult: fetchResult, configuration: configuration)
             
-            if configuration.filterAlbum(title: title, count: assetList.count) {
-                result.append(
-                    Album.build(collection: album, assetList: assetList)
-                )
+            let album = Album.build(collection: album, assetList: assetList)
+            if configuration.filter(album: album) {
+                result.append(album)
             }
             
         }
@@ -199,7 +194,7 @@ class PhotoPickerManager: NSObject {
         
         fetchResult.enumerateObjects { asset, _, _ in
             let asset = Asset.build(asset: asset)
-            if configuration.filterAsset(width: asset.width, height: asset.height, type: asset.type) {
+            if configuration.filter(asset: asset) {
                 list.append(asset)
             }
         }

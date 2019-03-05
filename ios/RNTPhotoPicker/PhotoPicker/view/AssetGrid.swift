@@ -127,19 +127,30 @@ extension AssetGrid: UICollectionViewDataSource {
 
         asset.index = index
         
+        let maxSelectCount = configuration.maxSelectCount
+        
         // 选中状态下可以反选
         if asset.order >= 0 {
             asset.selectable = true
         }
+        // 单选总是可选
+        else if maxSelectCount == 1 {
+            asset.selectable = true
+        }
         else {
-            asset.selectable = selectedAssetList.count < configuration.maxSelectCount
+            asset.selectable = selectedAssetList.count < maxSelectCount
         }
         
         cell.configuration = configuration
         cell.bind(asset: asset, size: cellPixelSize)
         
         cell.onToggleChecked = {
-            self.toggleChecked(asset: asset)
+            if maxSelectCount > 1 {
+                self.toggleMultiChecked(asset: asset)
+            }
+            else {
+                self.toggleSingleChecked(asset: asset)
+            }
         }
         
         return cell
@@ -203,38 +214,6 @@ extension AssetGrid: PHPhotoLibraryChangeObserver {
 
 extension AssetGrid {
     
-    private func indexPathsForElements(rect: CGRect) -> [IndexPath] {
-        let allLayoutAttributes = flowLayout.layoutAttributesForElements(in: rect)!
-        return allLayoutAttributes.map { $0.indexPath }
-    }
-    
-    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
-        if old.intersects(new) {
-            var added = [CGRect]()
-            if new.maxY > old.maxY {
-                added += [CGRect(x: new.origin.x, y: old.maxY,
-                                 width: new.width, height: new.maxY - old.maxY)]
-            }
-            if old.minY > new.minY {
-                added += [CGRect(x: new.origin.x, y: new.minY,
-                                 width: new.width, height: old.minY - new.minY)]
-            }
-            var removed = [CGRect]()
-            if new.maxY < old.maxY {
-                removed += [CGRect(x: new.origin.x, y: new.maxY,
-                                   width: new.width, height: old.maxY - new.maxY)]
-            }
-            if old.minY < new.minY {
-                removed += [CGRect(x: new.origin.x, y: old.minY,
-                                   width: new.width, height: new.minY - old.minY)]
-            }
-            return (added, removed)
-        }
-        else {
-            return ([new], [old])
-        }
-    }
-    
     private func getCellSize() -> CGSize {
         
         let spanCount = configuration.assetGridSpanCount
@@ -251,7 +230,28 @@ extension AssetGrid {
         
     }
     
-    private func toggleChecked(asset: Asset) {
+    private func toggleSingleChecked(asset: Asset) {
+    
+        // checked 获取反选值
+        let checked = asset.order < 0
+        let selectedCount = selectedAssetList.count
+        
+        if selectedCount == 1 {
+            let selectedAsset = selectedAssetList[0]
+            selectedAsset.order = -1
+            selectedAssetList.remove(at: 0)
+            collectionView.reloadItems(at: [getIndexPath(index: selectedAsset.index)])
+        }
+        
+        if (checked) {
+            asset.order = 0
+            selectedAssetList.append(asset)
+            collectionView.reloadItems(at: [getIndexPath(index: asset.index)])
+        }
+    
+    }
+    
+    private func toggleMultiChecked(asset: Asset) {
         
         // checked 获取反选值
         let checked = asset.order < 0

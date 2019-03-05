@@ -233,10 +233,10 @@ import Photos
     @objc public var submitButtonBorderRadius: CGFloat = 4
 
     // 确定按钮宽度
-    @objc public var submitButtonWidth: CGFloat = 58
+    @objc public var submitButtonWidth: CGFloat = 66
 
     // 确定按钮高度
-    @objc public var submitButtonHeight: CGFloat = 28
+    @objc public var submitButtonHeight: CGFloat = 30
 
     // 确定按钮的标题
     @objc public var submitButtonTitle = "确定"
@@ -325,12 +325,15 @@ import Photos
 
     }
 
-    open func filterAlbum(title: String, count: Int) -> Bool {
-        return count > 0
+    open func filter(album: Album) -> Bool {
+        return album.count > 0
     }
 
-    open func filterAsset(width: Int, height: Int, type: AssetType) -> Bool {
-        return width > imageMinWidth && height > imageMinHeight && type != .video
+    open func filter(asset: Asset) -> Bool {
+        if asset.type != .video {
+            return asset.width > imageMinWidth && asset.height > imageMinHeight
+        }
+        return true
     }
 
 }

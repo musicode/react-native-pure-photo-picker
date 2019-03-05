@@ -62,22 +62,12 @@ class AssetCell: UICollectionViewCell {
         }
     }
     
-    private var selectable = true {
-        didSet {
-            
-            guard selectable != oldValue else {
-                return
-            }
-            
-            overlayView.isHidden = selectable
-            
-        }
-    }
-    
     private var thumbnail: UIImage? {
         didSet {
             if let thumbnail = thumbnail {
-                selectButton.isHidden = thumbnail == configuration.assetThumbnailLoadingPlaceholder
+                if asset.selectable {
+                    selectButton.isHidden = thumbnail == configuration.assetThumbnailLoadingPlaceholder
+                }
                 thumbnailView.image = thumbnail
             }
             else {
@@ -155,30 +145,6 @@ class AssetCell: UICollectionViewCell {
         
     }()
     
-    // 当选择数量到达上限后显示的蒙板
-    private lazy var overlayView: UIView = {
-       
-        let view = UIView()
-
-        view.isHidden = true
-        view.backgroundColor = configuration.assetOverlayColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(view)
-        
-        contentView.addConstraints([
-            
-            NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: contentView, attribute: .right, multiplier: 1, constant: 0),
-            
-        ])
-        
-        return view
-        
-    }()
-    
     override func prepareForReuse() {
         super.prepareForReuse()
 
@@ -220,7 +186,8 @@ class AssetCell: UICollectionViewCell {
         }
         
         checked = asset.order >= 0
-        selectable = asset.selectable
+        
+        selectButton.isHidden = !asset.selectable
         
     }
     

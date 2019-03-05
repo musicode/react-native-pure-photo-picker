@@ -26,7 +26,7 @@ public class BottomBar: UIView {
                 submitButton.isEnabled = true
                 submitButton.alpha = 1
                 if configuration.maxSelectCount > 1 {
-                    title = "\(configuration.submitButtonTitle)(\(selectedCount))"
+                    title = "\(configuration.submitButtonTitle)(\(selectedCount)/\(configuration.maxSelectCount))"
                 }
             }
             else {
