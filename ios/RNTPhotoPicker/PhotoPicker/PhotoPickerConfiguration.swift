@@ -92,10 +92,10 @@ import Photos
     @objc public var selectButtonImageMarginRight: CGFloat = 5
 
     // 选择按钮的标题字体
-    @objc public var selectButtonTitleTextFont = UIFont.systemFont(ofSize: 14)
+    @objc public var selectButtonTextFont = UIFont.systemFont(ofSize: 14)
 
     // 选择按钮的标题颜色
-    @objc public var selectButtonTitleTextColor = UIColor.white
+    @objc public var selectButtonTextColor = UIColor.white
 
     // 未选中时的图片
     @objc public var selectButtonImageUnchecked = UIImage(named: "photo_picker_select_button_unchecked")
@@ -106,10 +106,6 @@ import Photos
     // 选中且需要计数时的图片
     @objc public var selectButtonImageCheckedCountable = UIImage(named: "photo_picker_select_button_checked_countable")
 
-    // 当选择的照片数量到达上线后的蒙层颜色
-    @objc public var assetOverlayColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
-
-
     //
     // MARK: - 顶部栏
     //
@@ -118,7 +114,7 @@ import Photos
     @objc public var topBarHeight: CGFloat = 44
 
     // 顶部栏水平内间距
-    @objc public var topBarPaddingHorizontal: CGFloat = 0
+    @objc public var topBarPaddingHorizontal: CGFloat = 14
 
     // 顶部栏背景色
     @objc public var topBarBackgroundColor = UIColor.white
@@ -148,13 +144,13 @@ import Photos
     //
 
     // 取消按钮的标题字体
-    @objc public var cancelButtonTitleTextFont = UIFont.systemFont(ofSize: 16)
+    @objc public var cancelButtonTextFont = UIFont.systemFont(ofSize: 16)
 
     // 取消按钮的标题颜色
-    @objc public var cancelButtonTitleTextColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+    @objc public var cancelButtonTextColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
 
     // 取消按钮宽度
-    @objc public var cancelButtonWidth: CGFloat = 60
+    @objc public var cancelButtonMinWidth: CGFloat = 60
 
     // 取消按钮高度
     @objc public var cancelButtonHeight: CGFloat = 34
@@ -168,10 +164,10 @@ import Photos
     //
 
     // 标题按钮的标题字体
-    @objc public var titleButtonTitleTextFont = UIFont.systemFont(ofSize: 18)
+    @objc public var titleButtonTextFont = UIFont.systemFont(ofSize: 18)
 
     // 标题按钮的标题颜色
-    @objc public var titleButtonTitleTextColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+    @objc public var titleButtonTextColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
 
     // 标题按钮的图标和文字的距离
     @objc public var titleButtonTitleMarginRight: CGFloat = 5
@@ -190,10 +186,10 @@ import Photos
     //
 
     // 原图按钮的标题字体
-    @objc public var rawButtonTitleTextFont = UIFont.systemFont(ofSize: 13)
+    @objc public var rawButtonTextFont = UIFont.systemFont(ofSize: 13)
 
     // 原图按钮的标题颜色
-    @objc public var rawButtonTitleTextColor = UIColor.white
+    @objc public var rawButtonTextColor = UIColor.white
 
     // 原图按钮的标题到图标的距离
     @objc public var rawButtonTitleMarginLeft: CGFloat = 6
@@ -218,10 +214,10 @@ import Photos
     //
 
     // 确定按钮的标题字体
-    @objc public var submitButtonTitleTextFont = UIFont.systemFont(ofSize: 12)
+    @objc public var submitButtonTextFont = UIFont.systemFont(ofSize: 12)
 
     // 确定按钮的标题颜色
-    @objc public var submitButtonTitleTextColor = UIColor.white
+    @objc public var submitButtonTextColor = UIColor.white
 
     // 确定按钮的背景色
     @objc public var submitButtonBackgroundColorNormal = UIColor(red: 1, green: 0.53, blue: 0.02, alpha: 1)

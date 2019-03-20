@@ -14,7 +14,7 @@ class PhotoPickerManager: NSObject {
     
     var onPermissionsDenied: (() -> Void)?
     
-    var onFetchWithoutPermissions: (() -> Void)?
+    var onPermissionsNotGranted: (() -> Void)?
     
     var onAlbumListChange: (() -> Void)?
     
@@ -90,7 +90,7 @@ class PhotoPickerManager: NSObject {
             break
         default:
             // denied 和 restricted 都表示没有权限访问相册
-            onFetchWithoutPermissions?()
+            onPermissionsNotGranted?()
             break
         }
     }
@@ -222,29 +222,6 @@ class PhotoPickerManager: NSObject {
     
     func cancelImageRequest(_ requestID: PHImageRequestID) {
         cacheManager.cancelImageRequest(requestID)
-    }
-    
-    func getAssetURL(asset: PHAsset, callback: @escaping (URL?) -> Void) {
-        if asset.mediaType == .image {
-            let options = PHContentEditingInputRequestOptions()
-            options.isNetworkAccessAllowed = true
-            asset.requestContentEditingInput(with: options) { contentEditingInput, info in
-                callback(contentEditingInput?.fullSizeImageURL)
-            }
-        }
-        else if asset.mediaType == .video {
-            let options = PHVideoRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.version = .original
-            cacheManager.requestAVAsset(forVideo: asset, options: options) { asset, _, _ in
-                if let urlAsset = asset as? AVURLAsset {
-                    callback(urlAsset.url)
-                }
-                else {
-                    callback(nil)
-                }
-            }
-        }
     }
     
 }

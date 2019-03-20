@@ -65,14 +65,14 @@ public class BottomBar: UIView {
         view.backgroundColor = configuration.submitButtonBackgroundColorNormal
         view.backgroundColorPressed = configuration.submitButtonBackgroundColorPressed
         
-        view.titleLabel?.font = configuration.submitButtonTitleTextFont
+        view.titleLabel?.font = configuration.submitButtonTextFont
 
         if configuration.submitButtonBorderRadius > 0 {
             view.layer.cornerRadius = configuration.submitButtonBorderRadius
             view.clipsToBounds = true
         }
         
-        view.setTitleColor(configuration.submitButtonTitleTextColor, for: .normal)
+        view.setTitleColor(configuration.submitButtonTextColor, for: .normal)
         
         addSubview(view)
         

@@ -1,6 +1,6 @@
 {
   "name": "react-native-pure-photo-picker",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "react native photo picker",
   "main": "index.js",
   "scripts": {
@@ -16,12 +16,9 @@
     "photo picker"
   ],
   "author": "musicode",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/musicode/react-native-pure-photo-picker/issues"
   },
-  "homepage": "https://github.com/musicode/react-native-pure-photo-picker#readme",
-  "dependencies": {
-    "prop-types": "^15.6.2"
-  }
+  "homepage": "https://github.com/musicode/react-native-pure-photo-picker#readme"
 }

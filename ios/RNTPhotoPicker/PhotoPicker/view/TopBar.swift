@@ -26,10 +26,10 @@ public class TopBar: UIView {
         
         let view = UIButton()
         
-        view.titleLabel?.font = configuration.cancelButtonTitleTextFont
+        view.titleLabel?.font = configuration.cancelButtonTextFont
         
         view.setTitle(configuration.cancelButtonTitle, for: .normal)
-        view.setTitleColor(configuration.cancelButtonTitleTextColor, for: .normal)
+        view.setTitleColor(configuration.cancelButtonTextColor, for: .normal)
 
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -38,7 +38,7 @@ public class TopBar: UIView {
         addConstraints([
             NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: configuration.topBarPaddingHorizontal),
             NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: bottomBorder, attribute: .top, multiplier: 1, constant: -(configuration.topBarHeight - configuration.cancelButtonHeight) / 2),
-            NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: configuration.cancelButtonWidth),
+            NSLayoutConstraint(item: view, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .width, multiplier: 1, constant: configuration.cancelButtonMinWidth),
             NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: configuration.cancelButtonHeight),
         ])
         

@@ -226,8 +226,8 @@ public class PhotoPickerViewController: UIViewController {
             self.delegate.photoPickerDidPermissionsDenied(self)
         }
         
-        manager.onFetchWithoutPermissions = {
-            self.delegate.photoPickerWillFetchWithoutPermissions(self)
+        manager.onPermissionsNotGranted = {
+            self.delegate.photoPickerDidPermissionsNotGranted(self)
         }
         
         manager.onAlbumListChange = {
@@ -263,10 +263,6 @@ public class PhotoPickerViewController: UIViewController {
         
         view.setNeedsLayout()
         
-    }
-    
-    public override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     private func setup() {
@@ -347,7 +343,7 @@ public class PhotoPickerViewController: UIViewController {
             
             let item = PickedAsset(path: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isRaw: isRawChecked)
             
-            PhotoPickerManager.shared.getAssetURL(asset: asset.asset) { url in
+            saveToSandbox(asset: asset) { url in
                 count += 1
                 if let url = url {
                     
@@ -364,6 +360,7 @@ public class PhotoPickerViewController: UIViewController {
                     }
                     
                 }
+
                 if count == result.count {
                     self.delegate.photoPickerDidSubmit(self, assetList: result)
                 }
@@ -371,6 +368,50 @@ public class PhotoPickerViewController: UIViewController {
             
             return item
             
+        }
+        
+        // saveToSandbox 的回调貌似是同步执行完的
+        // 为了确保最后会调 photoPickerDidSubmit，这里加一句
+        if count == result.count {
+            self.delegate.photoPickerDidSubmit(self, assetList: result)
+        }
+        
+    }
+    
+    private func saveToSandbox(asset: Asset, callback: @escaping (URL?) -> Void) {
+        
+        let nativeAsset = asset.asset
+        
+        guard let resource = PHAssetResource.assetResources(for: nativeAsset).first else {
+            return callback(nil)
+        }
+
+        let dirname = NSTemporaryDirectory()
+        
+        let localIdentifier = nativeAsset.localIdentifier.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "-", with: "_")
+        
+        // 保证唯一
+        let filename = "\(localIdentifier)_\(resource.originalFilename)"
+        
+        let path = dirname.hasSuffix("/") ? (dirname + filename) : "\(dirname)/\(filename)"
+        
+        let url = URL(fileURLWithPath: path)
+        
+        if FileManager.default.fileExists(atPath: path) {
+            callback(url)
+            return
+        }
+
+        let options = PHAssetResourceRequestOptions()
+        options.isNetworkAccessAllowed = true
+        
+        PHAssetResourceManager.default().writeData(for: resource, toFile: url, options: options) { error in
+            if error == nil {
+                callback(url)
+            }
+            else {
+                callback(nil)
+            }
         }
         
     }

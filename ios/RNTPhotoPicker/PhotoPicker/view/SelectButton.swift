@@ -96,8 +96,8 @@ class SelectButton: UIControl {
         self.configuration = configuration
         
         image = configuration.selectButtonImageUnchecked
-        titleView.font = configuration.selectButtonTitleTextFont
-        titleView.textColor = configuration.selectButtonTitleTextColor
+        titleView.font = configuration.selectButtonTextFont
+        titleView.textColor = configuration.selectButtonTextColor
         
     }
     

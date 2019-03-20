@@ -10,7 +10,7 @@ import UIKit
     func photoPickerDidSubmit(_ photoPicker: PhotoPickerViewController, assetList: [PickedAsset])
     
     // 获取相册数据时发现没权限
-    func photoPickerWillFetchWithoutPermissions(_ photoPicker: PhotoPickerViewController)
+    func photoPickerDidPermissionsNotGranted(_ photoPicker: PhotoPickerViewController)
     
     // 用户点击同意授权
     func photoPickerDidPermissionsGranted(_ photoPicker: PhotoPickerViewController)
@@ -22,7 +22,7 @@ import UIKit
 
 public extension PhotoPickerDelegate {
     
-    func photoPickerWillFetchWithoutPermissions(_ photoPicker: PhotoPickerViewController) { }
+    func photoPickerDidPermissionsNotGranted(_ photoPicker: PhotoPickerViewController) { }
     
     func photoPickerDidPermissionsGranted(_ photoPicker: PhotoPickerViewController) { }
     

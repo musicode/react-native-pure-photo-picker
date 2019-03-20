@@ -15,8 +15,8 @@ class TitleButton: UIControl {
         
         let view = UILabel()
         
-        view.font = configuration.titleButtonTitleTextFont
-        view.textColor = configuration.titleButtonTitleTextColor
+        view.font = configuration.titleButtonTextFont
+        view.textColor = configuration.titleButtonTextColor
         
         view.numberOfLines = 1
         view.lineBreakMode = .byTruncatingTail

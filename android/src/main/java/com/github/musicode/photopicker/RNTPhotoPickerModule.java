@@ -19,6 +19,8 @@ import com.github.herokotlin.photopicker.PhotoPickerCallback;
 import com.github.herokotlin.photopicker.PhotoPickerConfiguration;
 import com.github.herokotlin.photopicker.model.PickedAsset;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,40 +78,57 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
 
         configuration.setCountable(options.getBoolean("countable"));
         configuration.setMaxSelectCount(options.getInt("maxSelectCount"));
-        configuration.setImageMinWidth(options.getInt("imageMinWidth"));
-        configuration.setImageMinHeight(options.getInt("imageMinHeight"));
         configuration.setRawButtonVisible(options.getBoolean("rawButtonVisible"));
+
+        if (options.hasKey("imageMinWidth") && options.getInt("imageMinWidth") > 0) {
+            configuration.setImageMinWidth(options.getInt("imageMinWidth"));
+        }
+        if (options.hasKey("imageMinHeight") && options.getInt("imageMinHeight") > 0) {
+            configuration.setImageMinHeight(options.getInt("imageMinHeight"));
+        }
+        if (options.hasKey("cancelButtonTitle")) {
+            configuration.setCancelButtonTitle(options.getString("cancelButtonTitle"));
+        }
+        if (options.hasKey("rawButtonTitle")) {
+            configuration.setRawButtonTitle(options.getString("rawButtonTitle"));
+        }
+        if (options.hasKey("submitButtonTitle")) {
+            configuration.setSubmitButtonTitle(options.getString("submitButtonTitle"));
+        }
 
         PhotoPickerCallback callback = new PhotoPickerCallback() {
 
             @Override
-            public void onCancel(Activity activity) {
+            public void onCancel(@NotNull Activity activity) {
                 activity.finish();
                 promise.reject("-1", "cancel");
             }
 
             @Override
-            public void onFetchWithoutExternalStorage(Activity activity) {
+            public void onPermissionsNotGranted(@NotNull Activity activity) {
+                activity.finish();
+                promise.reject("1", "has no permissions");
+            }
+
+            @Override
+            public void onPermissionsDenied(@NotNull Activity activity) {
+                activity.finish();
+                promise.reject("2", "you denied the requested permissions.");
+            }
+
+            @Override
+            public void onExternalStorageNotWritable(@NotNull Activity activity) {
+                activity.finish();
+                promise.reject("3", "external storage is not writable");
+            }
+
+            @Override
+            public void onPermissionsGranted(@NotNull Activity activity) {
 
             }
 
             @Override
-            public void onFetchWithoutPermissions(Activity activity) {
-
-            }
-
-            @Override
-            public void onPermissionsDenied(Activity activity) {
-
-            }
-
-            @Override
-            public void onPermissionsGranted(Activity activity) {
-
-            }
-
-            @Override
-            public void onSubmit(Activity activity, List<PickedAsset> list) {
+            public void onSubmit(@NotNull Activity activity, List<PickedAsset> list) {
 
                 activity.finish();
 

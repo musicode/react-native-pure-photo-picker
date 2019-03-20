@@ -51,8 +51,8 @@ class RawButton: UIControl {
         self.init()
         self.configuration = configuration
 
-        titleView.font = configuration.rawButtonTitleTextFont
-        titleView.textColor = configuration.rawButtonTitleTextColor
+        titleView.font = configuration.rawButtonTextFont
+        titleView.textColor = configuration.rawButtonTextColor
         
         titleView.text = configuration.rawButtonTitle
 
