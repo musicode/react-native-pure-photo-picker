@@ -1,9 +1,6 @@
 package com.github.musicode.photopicker;
 
 import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.facebook.react.bridge.Arguments;
@@ -21,7 +18,6 @@ import com.github.herokotlin.photopicker.model.PickedAsset;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kotlin.Unit;
@@ -55,24 +51,6 @@ public class RNTPhotoPickerModule extends ReactContextBaseJavaModule {
             @Override
             public void loadAsset(ImageView imageView, String url, int loading, int error, Function1<? super Boolean, Unit> onComplete) {
                 loader.invoke(imageView, url, loading, error, onComplete);
-            }
-
-            @Override
-            public boolean requestPermissions(Activity activity, List<String> permissions, int requestCode) {
-                List<String> list = new ArrayList<>();
-
-                for (String permission: permissions) {
-                    if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
-                        list.add(permission);
-                    }
-                }
-
-                if (list.size() > 0) {
-                    ActivityCompat.requestPermissions(activity, list.toArray(new String[list.size()]), requestCode);
-                    return false;
-                }
-
-                return true;
             }
         };
 
