@@ -390,17 +390,13 @@ public class PhotoPickerViewController: UIViewController {
         
         let localIdentifier = nativeAsset.localIdentifier.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "-", with: "_")
         
-        // 保证唯一
         let filename = "\(localIdentifier)_\(resource.originalFilename)"
         
         let path = dirname.hasSuffix("/") ? (dirname + filename) : "\(dirname)/\(filename)"
         
         let url = URL(fileURLWithPath: path)
         
-        if FileManager.default.fileExists(atPath: path) {
-            callback(url)
-            return
-        }
+        // 这里不能判断 url 对应的本地文件是否存在，因为可能在同一张图片上修改，这样得出的 url 是相同的
 
         let options = PHAssetResourceRequestOptions()
         options.isNetworkAccessAllowed = true
