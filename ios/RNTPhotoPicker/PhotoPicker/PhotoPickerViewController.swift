@@ -382,32 +382,62 @@ public class PhotoPickerViewController: UIViewController {
         
         let nativeAsset = asset.asset
         
-        guard let resource = PHAssetResource.assetResources(for: nativeAsset).first else {
+        guard let originalVersion = PHAssetResource.assetResources(for: nativeAsset).first else {
             return callback(nil)
         }
-
+        
         let dirname = NSTemporaryDirectory()
         
         let localIdentifier = nativeAsset.localIdentifier.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "-", with: "_")
         
-        let filename = "\(localIdentifier)_\(resource.originalFilename)"
+        let format = DateFormatter()
+        format.dateFormat = "yyyy_MM_dd_HH_mm_ss"
+        
+        let filename = "\(format.string(from: Date()))_\(localIdentifier)_\(originalVersion.originalFilename)"
         
         let path = dirname.hasSuffix("/") ? (dirname + filename) : "\(dirname)/\(filename)"
         
         let url = URL(fileURLWithPath: path)
         
         // 这里不能判断 url 对应的本地文件是否存在，因为可能在同一张图片上修改，这样得出的 url 是相同的
-
-        let options = PHAssetResourceRequestOptions()
-        options.isNetworkAccessAllowed = true
+        // 修改过的图片只能获取到最初的版本
+        // 这里 canHandleAdjustmentData 返回 false 可获得最新版本
         
-        PHAssetResourceManager.default().writeData(for: resource, toFile: url, options: options) { error in
-            if error == nil {
-                callback(url)
+        if asset.type != .video {
+            
+            let options = PHContentEditingInputRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
+                return false
             }
-            else {
-                callback(nil)
+            
+            nativeAsset.requestContentEditingInput(with: options, completionHandler: { (contentEditingInput, info) in
+                guard let source = contentEditingInput?.fullSizeImageURL else {
+                    return
+                }
+                do {
+                    try FileManager.default.copyItem(at: source, to: url)
+                    callback(url)
+                }
+                catch {
+                    callback(nil)
+                }
+            })
+        }
+        else {
+            
+            let options = PHAssetResourceRequestOptions()
+            options.isNetworkAccessAllowed = true
+            
+            PHAssetResourceManager.default().writeData(for: originalVersion, toFile: url, options: options) { error in
+                if error == nil {
+                    callback(url)
+                }
+                else {
+                    callback(nil)
+                }
             }
+            
         }
         
     }
