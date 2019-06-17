@@ -329,7 +329,7 @@ import Photos
         if asset.type != .video {
             return asset.width > imageMinWidth && asset.height > imageMinHeight
         }
-        return true
+        return false
     }
 
 }
