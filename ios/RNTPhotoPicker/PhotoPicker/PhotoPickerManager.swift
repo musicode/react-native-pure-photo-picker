@@ -79,18 +79,22 @@ class PhotoPickerManager: NSObject {
             break
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { status in
-                if status == PHAuthorizationStatus.authorized {
-                    callback()
-                    self.onPermissionsGranted?()
-                }
-                else {
-                    self.onPermissionsDenied?()
+                DispatchQueue.main.async {
+                    if status == PHAuthorizationStatus.authorized {
+                        callback()
+                        self.onPermissionsGranted?()
+                    }
+                    else {
+                        self.onPermissionsDenied?()
+                    }
                 }
             }
             break
         default:
             // denied 和 restricted 都表示没有权限访问相册
-            onPermissionsNotGranted?()
+            DispatchQueue.main.async {
+                self.onPermissionsNotGranted?()
+            }
             break
         }
     }

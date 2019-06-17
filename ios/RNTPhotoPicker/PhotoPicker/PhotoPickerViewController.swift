@@ -209,15 +209,6 @@ public class PhotoPickerViewController: UIViewController {
 
         let manager = PhotoPickerManager.shared
 
-        manager.requestPermissions {
-            guard manager.scan() else {
-                return
-            }
-            DispatchQueue.main.async {
-                self.setup()
-            }
-        }
-        
         manager.onPermissionsGranted = {
             self.delegate.photoPickerDidPermissionsGranted(self)
         }
@@ -232,6 +223,15 @@ public class PhotoPickerViewController: UIViewController {
         
         manager.onAlbumListChange = {
             self.updateAlbumList()
+        }
+        
+        manager.requestPermissions {
+            guard manager.scan() else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.setup()
+            }
         }
 
     }

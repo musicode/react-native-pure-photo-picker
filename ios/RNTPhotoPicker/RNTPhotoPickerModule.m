@@ -31,9 +31,11 @@
     self.resolve(list);
 }
 - (void)photoPickerDidPermissionsNotGranted:(PhotoPickerViewController *)photoPicker {
+    [photoPicker dismissViewControllerAnimated:true completion:nil];
     self.reject(@"1", @"has no permissions", nil);
 }
 - (void)photoPickerDidPermissionsDenied:(PhotoPickerViewController *)photoPicker {
+    [photoPicker dismissViewControllerAnimated:true completion:nil];
     self.reject(@"2", @"you denied the requested permissions.", nil);
 }
 - (void)photoPickerDidPermissionsGranted:(PhotoPickerViewController *)photoPicker {
