@@ -6,15 +6,15 @@ import Photos
 // http://kayosite.com/ios-development-and-detail-of-photo-framework-part-two.html
 // http://blog.imwcl.com/2017/01/11/iOS%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6-Photos%E8%AF%A6%E8%A7%A3%E5%9F%BA%E4%BA%8EPhotos%E7%9A%84%E5%9B%BE%E7%89%87%E9%80%89%E6%8B%A9%E5%99%A8/
 
-class PhotoPickerManager: NSObject {
+@objc public class PhotoPickerManager: NSObject {
     
-    static let shared: PhotoPickerManager = PhotoPickerManager()
+    @objc public static let shared: PhotoPickerManager = PhotoPickerManager()
     
-    var onPermissionsGranted: (() -> Void)?
+    @objc public var onPermissionsGranted: (() -> Void)?
     
-    var onPermissionsDenied: (() -> Void)?
+    @objc public var onPermissionsDenied: (() -> Void)?
     
-    var onPermissionsNotGranted: (() -> Void)?
+    @objc public var onPermissionsNotGranted: (() -> Void)?
     
     var onAlbumListChange: (() -> Void)?
     
@@ -72,7 +72,7 @@ class PhotoPickerManager: NSObject {
     }
     
     // 所有操作之前必须先确保拥有权限
-    public func requestPermissions(callback: @escaping () -> Void) {
+    @objc public func requestPermissions(callback: @escaping () -> Void) {
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
             callback()
@@ -232,7 +232,7 @@ class PhotoPickerManager: NSObject {
 
 extension PhotoPickerManager: PHPhotoLibraryChangeObserver {
     
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
+    public func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.sync {
             
             isDirty = false
