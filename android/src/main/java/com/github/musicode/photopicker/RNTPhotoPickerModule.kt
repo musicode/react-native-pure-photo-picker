@@ -2,6 +2,7 @@ package com.github.musicode.photopicker
 
 import android.app.Activity
 import android.widget.ImageView
+import com.facebook.react.ReactActivity
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
@@ -9,6 +10,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.modules.core.PermissionAwareActivity
 import com.github.herokotlin.photopicker.PhotoPickerActivity
 import com.github.herokotlin.photopicker.PhotoPickerCallback
 import com.github.herokotlin.photopicker.PhotoPickerConfiguration
@@ -18,6 +20,13 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
     override fun getName(): String {
         return "RNTPhotoPicker"
+    }
+
+    private var permissionListener = { requestCode: Int, permissions: Array<out String>?, grantResults: IntArray? ->
+        if (permissions != null && grantResults != null) {
+            PhotoPickerActivity.permission.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+        true
     }
 
     @ReactMethod
@@ -37,6 +46,14 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
             promise.reject("1", "has no permissions")
         }
 
+        permission.onRequestPermissions = { activity, list, requestCode ->
+            if (activity is ReactActivity) {
+                activity.requestPermissions(list, requestCode, permissionListener)
+            }
+            else if (activity is PermissionAwareActivity) {
+                (activity as PermissionAwareActivity).requestPermissions(list, requestCode, permissionListener)
+            }
+        }
 
         if (permission.checkExternalStorageWritable()) {
             permission.requestPermissions(currentActivity!!) {
