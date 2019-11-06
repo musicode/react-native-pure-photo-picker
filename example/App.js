@@ -18,7 +18,7 @@ const instructions = Platform.select({
     'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
 });
-
+console.log(PhotoPicker)
 type Props = {};
 export default class App extends Component<Props> {
   render() {
@@ -26,7 +26,7 @@ export default class App extends Component<Props> {
       <View style={styles.container}>
         <Text style={styles.welcome}
         onPress={() => {
-          PhotoPicker.open(3, false)
+          PhotoPicker.open({})
           .then(list => {
             console.log(list)
           })

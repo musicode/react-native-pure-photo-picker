@@ -98,15 +98,15 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
                 promise.reject("-1", "cancel")
             }
 
-            override fun onSubmit(activity: Activity, list: List<PickedAsset>) {
+            override fun onSubmit(activity: Activity, assetList: List<PickedAsset>) {
 
                 activity.finish()
 
                 val array = Arguments.createArray()
 
-                for (i in list.indices) {
+                for (i in assetList.indices) {
                     val map = Arguments.createMap()
-                    val (path, _, width, height, size, isVideo, isRaw) = list[i]
+                    val (path, _, width, height, size, isVideo, isRaw) = assetList[i]
 
                     map.putString("path", path)
                     map.putInt("size", size)
@@ -131,9 +131,9 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
     companion object {
 
-        private lateinit var loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Void
+        private lateinit var loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit
 
-        fun setImageLoader(loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Void) {
+        fun setImageLoader(loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit) {
             this.loader = loader
         }
 

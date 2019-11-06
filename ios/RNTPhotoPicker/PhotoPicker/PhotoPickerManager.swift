@@ -75,7 +75,9 @@ import Photos
     @objc public func requestPermissions(callback: @escaping () -> Void) {
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
-            callback()
+            DispatchQueue.main.async {
+                callback()
+            }
             break
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { status in

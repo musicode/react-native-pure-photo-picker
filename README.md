@@ -6,6 +6,7 @@ This is a module which help you pick an image.
 
 ```
 npm i react-native-pure-photo-picker
+// link below 0.60
 react-native link react-native-pure-photo-picker
 ```
 
