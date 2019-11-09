@@ -34,16 +34,29 @@
 
 RCT_EXPORT_MODULE(RNTPhotoPicker);
 
+RCT_EXPORT_METHOD(requestPermissions:(RCTPromiseResolveBlock)resolve
+                    reject:(RCTPromiseRejectBlock)reject) {
+    
+    PhotoPickerManager.shared.onPermissionsDenied = ^ () {
+        reject(@"2", @"you denied the requested permissions.", nil);
+    };
+
+    PhotoPickerManager.shared.onPermissionsNotGranted = ^ () {
+        reject(@"1", @"has no permissions", nil);
+    };
+    
+    [PhotoPickerManager.shared requestPermissionsWithCallback:^ () {
+        resolve(@{});
+    }];
+    
+}
+
 RCT_EXPORT_METHOD(open:(NSDictionary*)options
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
 
     self.resolve = resolve;
     self.reject = reject;
-
-    PhotoPickerManager.shared.onPermissionsGranted = ^ () {
-
-    };
 
     PhotoPickerManager.shared.onPermissionsDenied = ^ () {
         self.reject(@"2", @"you denied the requested permissions.", nil);

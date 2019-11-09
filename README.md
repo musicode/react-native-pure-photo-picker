@@ -71,6 +71,19 @@ public class MainApplication extends Application implements ReactApplication {
 ```js
 import PhotoPicker from 'react-native-pure-photo-picker'
 
+// 单独判断是否获取到了权限，如果没有，会弹出用户授权对话框
+PhotoPicker.requestPermissions()
+.then(() => {
+  // 获取了权限
+})
+.catch(error => {
+  let { code } = error
+  // 1: has no permissions
+  // 2: denied the requested permissions
+  // 3: external storage is not writable
+})
+
+// 包含获取权限 + 打开选择图片的界面
 PhotoPicker.open({
 
   maxSelectCount: 9,

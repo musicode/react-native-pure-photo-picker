@@ -30,7 +30,25 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
     }
 
     @ReactMethod
+    fun requestPermissions(options: ReadableMap, promise: Promise) {
+
+        requestPermissions(promise) {
+            // 跟 ios 保持一致，传一个空对象
+            promise.resolve(Arguments.createMap())
+        }
+
+    }
+
+    @ReactMethod
     fun open(options: ReadableMap, promise: Promise) {
+
+        requestPermissions(promise) {
+            openActivity(options, promise)
+        }
+
+    }
+
+    private fun requestPermissions(promise: Promise, callback: () -> Unit) {
 
         val permission = PhotoPickerActivity.permission
 
@@ -57,7 +75,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
         if (permission.checkExternalStorageWritable()) {
             permission.requestPermissions(currentActivity!!) {
-                openActivity(options, promise)
+                callback.invoke()
             }
         }
 
