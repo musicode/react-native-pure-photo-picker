@@ -30,7 +30,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
     }
 
     @ReactMethod
-    fun requestPermissions(options: ReadableMap, promise: Promise) {
+    fun requestPermissions(promise: Promise) {
 
         requestPermissions(promise) {
             // 跟 ios 保持一致，传一个空对象
