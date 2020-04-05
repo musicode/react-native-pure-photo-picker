@@ -11,12 +11,25 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.modules.core.PermissionAwareActivity
+import com.github.herokotlin.permission.Permission
 import com.github.herokotlin.photopicker.PhotoPickerActivity
 import com.github.herokotlin.photopicker.PhotoPickerCallback
 import com.github.herokotlin.photopicker.PhotoPickerConfiguration
 import com.github.herokotlin.photopicker.model.PickedAsset
 
 class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+
+    companion object {
+
+        private val permission = Permission(19903, listOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
+
+        private lateinit var loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit
+
+        fun setImageLoader(loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit) {
+            this.loader = loader
+        }
+
+    }
 
     override fun getName(): String {
         return "RNTPhotoPicker"
@@ -49,8 +62,6 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
     }
 
     private fun requestPermissions(promise: Promise, callback: () -> Unit) {
-
-        val permission = PhotoPickerActivity.permission
 
         permission.onExternalStorageNotWritable = {
             promise.reject("3", "external storage is not writable")
@@ -145,16 +156,6 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
         PhotoPickerActivity.callback = callback
 
         PhotoPickerActivity.newInstance(reactContext.currentActivity!!)
-    }
-
-    companion object {
-
-        private lateinit var loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit
-
-        fun setImageLoader(loader: (imageView: ImageView, url: String, loading: Int, error: Int, onComplete: (Boolean) -> Unit) -> Unit) {
-            this.loader = loader
-        }
-
     }
 
 }
