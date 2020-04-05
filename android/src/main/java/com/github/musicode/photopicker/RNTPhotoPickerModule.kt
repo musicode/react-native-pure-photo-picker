@@ -37,7 +37,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
     private var permissionListener = { requestCode: Int, permissions: Array<out String>?, grantResults: IntArray? ->
         if (permissions != null && grantResults != null) {
-            PhotoPickerActivity.permission.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            permission.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
         true
     }
@@ -64,7 +64,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
     private fun requestPermissions(promise: Promise, callback: () -> Unit) {
 
         permission.onExternalStorageNotWritable = {
-            promise.reject("3", "external storage is not writable")
+            promise.reject("3", "external storage is not writable.")
         }
 
         permission.onPermissionsDenied = {
@@ -72,7 +72,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
         }
 
         permission.onPermissionsNotGranted = {
-            promise.reject("1", "has no permissions")
+            promise.reject("1", "has no permissions.")
         }
 
         permission.onRequestPermissions = { activity, list, requestCode ->
