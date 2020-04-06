@@ -1,12 +1,13 @@
 
 #import "RNTPhotoPicker.h"
+#import <React/RCTConvert.h>
 #import "react_native_pure_photo_picker-Swift.h"
 
-@interface RNTPhotoPickerModule()<PhotoPickerDelegate>
+@interface RNTPhotoPicker()<PhotoPickerDelegate>
 
 @end
 
-@implementation RNTPhotoPickerModule
+@implementation RNTPhotoPicker
 
 - (void)photoPickerDidCancel:(PhotoPickerViewController *)photoPicker {
     [photoPicker dismissViewControllerAnimated:true completion:nil];
