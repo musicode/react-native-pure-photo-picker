@@ -207,7 +207,7 @@ public class PhotoPickerViewController: UIViewController {
         
         super.viewDidLoad()
 
-        // 用 PhotoPickerManager 在外面获取完权限再进来吧
+        // 在外面获取完权限再进来吧
         // 否则没权限一片漆黑，体验极差
         let manager = PhotoPickerManager.shared
         

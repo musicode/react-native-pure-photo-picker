@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9D465AB221FC2B90006BBBC1 /* RNTPhotoPickerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D465AB121FC2B90006BBBC1 /* RNTPhotoPickerModule.m */; };
-		9D465AB321FC2B90006BBBC1 /* RNTPhotoPickerModule.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D465AB021FC2B90006BBBC1 /* RNTPhotoPickerModule.h */; };
+		9D465AB221FC2B90006BBBC1 /* RNTPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D465AB121FC2B90006BBBC1 /* RNTPhotoPicker.m */; };
+		9D465AB321FC2B90006BBBC1 /* RNTPhotoPicker.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9D465AB021FC2B90006BBBC1 /* RNTPhotoPicker.h */; };
 		9DE94CF4222E4BBD00DE079F /* PhotoPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CDD222E4BBD00DE079F /* PhotoPickerConfiguration.swift */; };
 		9DE94CF5222E4BBD00DE079F /* PhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CDE222E4BBD00DE079F /* PhotoPickerViewController.swift */; };
 		9DE94CF6222E4BBD00DE079F /* SimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CE0222E4BBD00DE079F /* SimpleButton.swift */; };
@@ -36,7 +36,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				9D465AB321FC2B90006BBBC1 /* RNTPhotoPickerModule.h in CopyFiles */,
+				9D465AB321FC2B90006BBBC1 /* RNTPhotoPicker.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,8 +44,8 @@
 
 /* Begin PBXFileReference section */
 		9D465AAD21FC2B90006BBBC1 /* libRNTPhotoPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNTPhotoPicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D465AB021FC2B90006BBBC1 /* RNTPhotoPickerModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTPhotoPickerModule.h; sourceTree = "<group>"; };
-		9D465AB121FC2B90006BBBC1 /* RNTPhotoPickerModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTPhotoPickerModule.m; sourceTree = "<group>"; };
+		9D465AB021FC2B90006BBBC1 /* RNTPhotoPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTPhotoPicker.h; sourceTree = "<group>"; };
+		9D465AB121FC2B90006BBBC1 /* RNTPhotoPicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTPhotoPicker.m; sourceTree = "<group>"; };
 		9D465B4021FC2D8F006BBBC1 /* RNTPhotoPicker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNTPhotoPicker-Bridging-Header.h"; sourceTree = "<group>"; };
 		9D465B9D21FC4586006BBBC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DE94CDD222E4BBD00DE079F /* PhotoPickerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerConfiguration.swift; sourceTree = "<group>"; };
@@ -99,8 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				9DE94CDC222E4BBD00DE079F /* PhotoPicker */,
-				9D465AB021FC2B90006BBBC1 /* RNTPhotoPickerModule.h */,
-				9D465AB121FC2B90006BBBC1 /* RNTPhotoPickerModule.m */,
+				9D465AB021FC2B90006BBBC1 /* RNTPhotoPicker.h */,
+				9D465AB121FC2B90006BBBC1 /* RNTPhotoPicker.m */,
 				9D465B4021FC2D8F006BBBC1 /* RNTPhotoPicker-Bridging-Header.h */,
 				9D465B9D21FC4586006BBBC1 /* Assets.xcassets */,
 			);
@@ -225,7 +225,7 @@
 				9DE94CF7222E4BBD00DE079F /* AssetType.swift in Sources */,
 				9DE94CFC222E4BBD00DE079F /* AssetCell.swift in Sources */,
 				9DE94CFD222E4BBD00DE079F /* SelectButton.swift in Sources */,
-				9D465AB221FC2B90006BBBC1 /* RNTPhotoPickerModule.m in Sources */,
+				9D465AB221FC2B90006BBBC1 /* RNTPhotoPicker.m in Sources */,
 				9DE94D00222E4BBD00DE079F /* AssetGrid.swift in Sources */,
 				9DE94D05222E4BBD00DE079F /* PhotoPickerDelegate.swift in Sources */,
 				9DE94D01222E4BBD00DE079F /* TopBar.swift in Sources */,

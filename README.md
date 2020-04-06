@@ -34,33 +34,22 @@ allprojects {
 }
 ```
 
-Modify `MainApplication.java`
+Modify `MainApplication`
 
-```java
+```kotlin
+class MainApplication : Application(), ReactApplication {
 
-import com.github.musicode.photopicker.RNTPhotoPickerModule;
+  override fun onCreate() {
+    super.onCreate()
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function5;
+    RNTPhotoPickerModule.init { imageView, url, loading, error, onComplete ->
 
-public class MainApplication extends Application implements ReactApplication {
+        // load image to imageView by url
+        // onComplete.invoke(false): load error
+        // onComplete.invoke(true): load success
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
+    }
 
-    RNTPhotoPickerModule.setImageLoader(
-      new Function5<ImageView, String, Integer, Integer, Function1, Unit>() {
-        @Override
-        public Unit invoke(ImageView imageView, String url, Integer loading, Integer error, Function1 onComplete) {
-
-          // add your image loader here
-
-          return null;
-        }
-      }
-    );
   }
 
 }
@@ -69,22 +58,16 @@ public class MainApplication extends Application implements ReactApplication {
 ## Usage
 
 ```js
-import PhotoPicker from 'react-native-pure-photo-picker'
+import photoPicker from 'react-native-pure-photo-picker'
 
-// 单独判断是否获取到了权限，如果没有，会弹出用户授权对话框
-PhotoPicker.requestPermissions()
-.then(() => {
-  // 获取了权限
-})
-.catch(error => {
-  let { code } = error
-  // 1: has no permissions
-  // 2: denied the requested permissions
-  // 3: external storage is not writable
-})
+// At first, make sure you have the permissions.
+// ios: PHOTO_LIBRARY
+// android: WRITE_EXTERNAL_STORAGE
+
+// If you don't have these permissions, you can't call open method.
 
 // 包含获取权限 + 打开选择图片的界面
-PhotoPicker.open({
+photoPicker.open({
 
   maxSelectCount: 9,
   countable: true,
@@ -103,15 +86,11 @@ PhotoPicker.open({
   // optional
   rawButtonTitle: '原图',
 })
-.then(file => {
-  let { path, size, width, height, isRaw } = file
+.then(data => {
+  let { path, size, width, height, isRaw } = data
 
 })
-.catch(error => {
-  let { code } = error
-  // -1: click cancel button
-  // 1: has no permissions
-  // 2: denied the requested permissions
-  // 3: external storage is not writable
+.catch(() => {
+  // click cancel button
 })
 ```

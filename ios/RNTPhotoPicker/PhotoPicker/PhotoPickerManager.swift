@@ -9,13 +9,7 @@ import Photos
 @objc public class PhotoPickerManager: NSObject {
     
     @objc public static let shared: PhotoPickerManager = PhotoPickerManager()
-    
-    @objc public var onPermissionsGranted: (() -> Void)?
-    
-    @objc public var onPermissionsDenied: (() -> Void)?
-    
-    @objc public var onPermissionsNotGranted: (() -> Void)?
-    
+
     var onAlbumListChange: (() -> Void)?
     
     var albumList: [Album]!
@@ -69,36 +63,6 @@ import Photos
             return
         }
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-    }
-    
-    // 所有操作之前必须先确保拥有权限
-    @objc public func requestPermissions(callback: @escaping () -> Void) {
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .authorized:
-            DispatchQueue.main.async {
-                callback()
-            }
-            break
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { status in
-                DispatchQueue.main.async {
-                    if status == PHAuthorizationStatus.authorized {
-                        callback()
-                        self.onPermissionsGranted?()
-                    }
-                    else {
-                        self.onPermissionsDenied?()
-                    }
-                }
-            }
-            break
-        default:
-            // denied 和 restricted 都表示没有权限访问相册
-            DispatchQueue.main.async {
-                self.onPermissionsNotGranted?()
-            }
-            break
-        }
     }
     
     func scan() -> Bool {

@@ -4,6 +4,7 @@ import { NativeModules } from 'react-native'
 const { RNTPhotoPicker } = NativeModules
 
 export default {
+
   /**
    *
    * @param {Object} options
@@ -19,13 +20,6 @@ export default {
    */
   open(options) {
     return RNTPhotoPicker.open(options)
-  },
-
-  /**
-   * 判断是否有相关权限
-   */
-  requestPermissions() {
-    return RNTPhotoPicker.requestPermissions()
   }
 
 }
