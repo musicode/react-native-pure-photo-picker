@@ -322,7 +322,9 @@ import Photos
     }
 
     open func filter(album: Album) -> Bool {
-        return album.count > 0
+        // 相册不能按照片数量过滤，因为可能手机被清空过
+        // 导致最终一个相册都没有
+        return true
     }
 
     open func filter(asset: Asset) -> Bool {

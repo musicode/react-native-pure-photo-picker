@@ -1,5 +1,5 @@
 
-import Foundation
+import UIKit
 import Photos
 
 // https://www.jianshu.com/p/6f051fe88717
@@ -142,12 +142,13 @@ import Photos
         
         var result = [Album]()
         
-        albumList.forEach { album in
+        albumList.forEach { item in
             
-            let fetchResult = fetchAssetList(album: album, configuration: configuration)
+            let fetchResult = fetchAssetList(album: item, configuration: configuration)
             let assetList = fetchResult2List(fetchResult: fetchResult, configuration: configuration)
+
+            let album = Album.build(collection: item, assetList: assetList)
             
-            let album = Album.build(collection: album, assetList: assetList)
             if configuration.filter(album: album) {
                 result.append(album)
             }

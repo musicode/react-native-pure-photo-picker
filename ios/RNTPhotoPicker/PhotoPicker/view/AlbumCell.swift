@@ -198,7 +198,19 @@ class AlbumCell: UITableViewCell {
             posterView.image = configuration.albumEmptyPlaceholder
         }
         
-        titleView.text = album.title
+        var title = ""
+        
+        if let albumTitle = album.title {
+            title = albumTitle
+        }
+        
+        // 没找到怎么用 auto layout 解决标题太长的问题
+        // 先用字符串截断代替
+        if title.count > 10 {
+            title = String(title.prefix(10)) + "…"
+        }
+        
+        titleView.text = title
         countView.text = "\(album.count)"
         
         if index == 0 {
