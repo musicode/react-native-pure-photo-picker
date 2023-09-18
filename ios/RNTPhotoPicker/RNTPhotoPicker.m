@@ -25,6 +25,7 @@
     for (PickedAsset *item in assetList) {
         [list addObject:@{
                           @"path": item.path,
+                          @"base64": item.base64,
                           @"size": @(item.size),
                           @"width": @(item.width),
                           @"height": @(item.height),

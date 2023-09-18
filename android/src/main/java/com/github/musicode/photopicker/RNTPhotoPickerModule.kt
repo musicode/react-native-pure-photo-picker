@@ -74,9 +74,10 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
                 for (i in assetList.indices) {
                     val map = Arguments.createMap()
-                    val (path, _, width, height, size, isVideo, isRaw) = assetList[i]
+                    val (path, _, base64, width, height, size, isVideo, isRaw) = assetList[i]
 
                     map.putString("path", path)
+                    map.putString("base64", base64)
                     map.putInt("size", size)
                     map.putInt("width", width)
                     map.putInt("height", height)

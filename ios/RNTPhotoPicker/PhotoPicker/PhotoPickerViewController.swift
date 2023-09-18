@@ -330,18 +330,22 @@ public class PhotoPickerViewController: UIViewController {
         
         result = selectedList.map { asset in
             
-            let item = PickedAsset(path: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isRaw: isRawChecked)
+            let item = PickedAsset(path: "", base64: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isRaw: isRawChecked)
             
             saveToSandbox(asset: asset) { url in
                 count += 1
                 if let url = url {
-                    
+                
                     var path = url.absoluteString
                     if path.hasPrefix(urlPrefix) {
                         path = NSString(string: path).substring(from: urlPrefix.count)
                     }
                     
                     item.path = path
+                    
+                    if let imageData = NSData(contentsOf: URL(fileURLWithPath: path)) {
+                        item.base64 = imageData.base64EncodedString()
+                    }
                     
                     let info = try! FileManager.default.attributesOfItem(atPath: path)
                     if let size = info[FileAttributeKey.size] as? Int {
