@@ -1,6 +1,6 @@
 {
   "name": "react-native-pure-photo-picker",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "react native photo picker",
   "main": "index.js",
   "scripts": {

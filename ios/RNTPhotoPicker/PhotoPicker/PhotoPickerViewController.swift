@@ -370,8 +370,12 @@ public class PhotoPickerViewController: UIViewController {
     private func saveToSandbox(asset: Asset, callback: @escaping (URL?) -> Void) {
         
         let nativeAsset = asset.asset
+        let nativeResources = PHAssetResource.assetResources(for: nativeAsset)
         
-        guard let originalVersion = PHAssetResource.assetResources(for: nativeAsset).first else {
+        guard nativeResources.count > 0 else {
+            return callback(nil)
+        }
+        guard let originalVersion = nativeResources.first else {
             return callback(nil)
         }
         
