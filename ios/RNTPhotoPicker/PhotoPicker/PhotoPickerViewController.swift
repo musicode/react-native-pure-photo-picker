@@ -345,8 +345,10 @@ public class PhotoPickerViewController: UIViewController {
                     
                     item.path = path
                     
-                    if let imageData = NSData(contentsOf: URL(fileURLWithPath: path)) {
-                        item.base64 = imageData.base64EncodedString()
+                    if !item.isVideo {
+                        if let imageData = NSData(contentsOf: URL(fileURLWithPath: path)) {
+                            item.base64 = imageData.base64EncodedString()
+                        }
                     }
                     
                     let info = try! FileManager.default.attributesOfItem(atPath: path)
@@ -379,17 +381,17 @@ public class PhotoPickerViewController: UIViewController {
             return callback(nil)
         }
         
-        let dirname = NSTemporaryDirectory()
+        var dirname = NSTemporaryDirectory()
+        if !dirname.hasSuffix("/") {
+            dirname += "/"
+        }
         
-        let localIdentifier = nativeAsset.localIdentifier.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "-", with: "_")
+        var extname = URL(fileURLWithPath: originalVersion.originalFilename).pathExtension
+        if !extname.isEmpty {
+            extname = "." + extname
+        }
         
-        let format = DateFormatter()
-        format.dateFormat = "yyyy_MM_dd_HH_mm_ss"
-        
-        let filename = "\(format.string(from: Date()))_\(localIdentifier)_\(originalVersion.originalFilename)"
-        
-        let path = dirname.hasSuffix("/") ? (dirname + filename) : "\(dirname)/\(filename)"
-        
+        let path = dirname + UUID().uuidString + extname
         let url = URL(fileURLWithPath: path)
 
         let options = PHAssetResourceRequestOptions()
