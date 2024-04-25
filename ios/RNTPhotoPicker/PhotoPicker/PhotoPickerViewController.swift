@@ -377,7 +377,7 @@ public class PhotoPickerViewController: UIViewController {
         guard nativeResources.count > 0 else {
             return callback(nil)
         }
-        guard let originalVersion = nativeResources.first else {
+        guard let originalVersion = nativeResources.last else {
             return callback(nil)
         }
         
