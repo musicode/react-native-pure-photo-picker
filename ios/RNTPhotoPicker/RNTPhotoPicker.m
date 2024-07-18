@@ -30,7 +30,7 @@
                           @"width": @(item.width),
                           @"height": @(item.height),
                           @"isVideo": @(item.isVideo),
-                          @"isRaw": @(item.isRaw)
+                          @"isOriginal": @(item.isOriginal)
                           }];
     }
 
@@ -53,7 +53,7 @@ RCT_EXPORT_METHOD(open:(NSDictionary*)options
 
     configuration.countable = [RCTConvert BOOL:options[@"countable"]];
     configuration.maxSelectCount = [RCTConvert int:options[@"maxSelectCount"]];
-    configuration.rawButtonVisible = [RCTConvert BOOL:options[@"rawButtonVisible"]];
+    configuration.showOriginalButton = [RCTConvert BOOL:options[@"showOriginalButton"]];
 
     int imageMinWidth = [RCTConvert int:options[@"imageMinWidth"]];
     if (imageMinWidth > 0) {
@@ -70,9 +70,9 @@ RCT_EXPORT_METHOD(open:(NSDictionary*)options
         configuration.cancelButtonTitle = cancelButtonTitle;
     }
 
-    NSString *rawButtonTitle = [RCTConvert NSString:options[@"rawButtonTitle"]];
-    if (rawButtonTitle != nil) {
-        configuration.rawButtonTitle = rawButtonTitle;
+    NSString *originalButtonTitle = [RCTConvert NSString:options[@"originalButtonTitle"]];
+    if (originalButtonTitle != nil) {
+        configuration.originalButtonTitle = originalButtonTitle;
     }
 
     NSString *submitButtonTitle = [RCTConvert NSString:options[@"submitButtonTitle"]];

@@ -171,7 +171,7 @@ public class PhotoPickerViewController: UIViewController {
        
         let bottomBar = BottomBar(configuration: configuration)
         
-        bottomBar.isRawChecked = false
+        bottomBar.isOriginalChecked = false
         bottomBar.selectedCount = 0
         
         bottomBar.submitButton.onClick = {
@@ -321,7 +321,7 @@ public class PhotoPickerViewController: UIViewController {
         }
         
         // 排序完成之后，转成 PickedAsset
-        let isRawChecked = bottomBar.isRawChecked
+        let isOriginalChecked = bottomBar.isOriginalChecked
         
         var count = 0
         let urlPrefix = "file://"
@@ -330,7 +330,7 @@ public class PhotoPickerViewController: UIViewController {
         
         selectedList.forEach { asset in
             
-            let item = PickedAsset(path: "", base64: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isRaw: isRawChecked)
+            let item = PickedAsset(path: "", base64: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isOriginal: isOriginalChecked)
             
             result.append(item)
             
@@ -372,12 +372,23 @@ public class PhotoPickerViewController: UIViewController {
     private func saveToSandbox(asset: Asset, callback: @escaping (URL?) -> Void) {
         
         let nativeAsset = asset.asset
+        let nativeIsImage = nativeAsset.mediaType == .image
         let nativeResources = PHAssetResource.assetResources(for: nativeAsset)
         
-        guard nativeResources.count > 0 else {
+        var outputResources = [PHAssetResource]()
+        // 从 nativeResources 过滤出图片，因为 live photo 会包含 mov 视频
+        nativeResources.forEach { item in
+            let extname = URL(fileURLWithPath: item.originalFilename).pathExtension
+            if nativeIsImage && extname.uppercased() == "MOV" {
+                return
+            }
+            outputResources.append(item)
+        }
+        
+        guard outputResources.count > 0 else {
             return callback(nil)
         }
-        guard let originalVersion = nativeResources.last else {
+        guard let outputVersion = outputResources.last else {
             return callback(nil)
         }
         
@@ -386,7 +397,7 @@ public class PhotoPickerViewController: UIViewController {
             dirname += "/"
         }
         
-        var extname = URL(fileURLWithPath: originalVersion.originalFilename).pathExtension
+        var extname = URL(fileURLWithPath: outputVersion.originalFilename).pathExtension
         if !extname.isEmpty {
             extname = "." + extname
         }
@@ -397,7 +408,7 @@ public class PhotoPickerViewController: UIViewController {
         let options = PHAssetResourceRequestOptions()
         options.isNetworkAccessAllowed = true
         
-        PHAssetResourceManager.default().writeData(for: originalVersion, toFile: url, options: options) { error in
+        PHAssetResourceManager.default().writeData(for: outputVersion, toFile: url, options: options) { error in
             if error == nil {
                 callback(url)
             }

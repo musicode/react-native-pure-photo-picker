@@ -71,7 +71,7 @@ photoPicker.open({
 
   maxSelectCount: 9,
   countable: true,
-  rawButtonVisible: true,
+  showOriginalButton: true,
 
   // filter image by width and height
   // optional
@@ -84,10 +84,10 @@ photoPicker.open({
   // optional
   cancelButtonTitle: '取消',
   // optional
-  rawButtonTitle: '原图',
+  originalButtonTitle: '原图',
 })
 .then(data => {
-  let { path, size, width, height, isRaw } = data
+  let { path, size, width, height, isOriginal } = data
 
 })
 .catch(() => {

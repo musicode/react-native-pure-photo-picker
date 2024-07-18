@@ -10,11 +10,11 @@ export default {
    * @param {Object} options
    * @property {boolean} options.countable
    * @property {number} options.maxSelectCount
-   * @property {boolean} options.rawButtonVisible
+   * @property {boolean} options.showOriginalButton
    * @property {number} options.imageMinWidth
    * @property {number} options.imageMinHeight
    * @property {string} options.cancelButtonTitle
-   * @property {string} options.rawButtonTitle
+   * @property {string} options.originalButtonTitle
    * @property {string} options.submitButtonTitle
    * @return {Promise}
    */

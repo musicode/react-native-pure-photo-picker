@@ -41,7 +41,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
         configuration.countable = options.getBoolean("countable")
         configuration.maxSelectCount = options.getInt("maxSelectCount")
-        configuration.rawButtonVisible = options.getBoolean("rawButtonVisible")
+        configuration.showOriginalButton = options.getBoolean("showOriginalButton")
 
         if (options.hasKey("imageMinWidth") && options.getInt("imageMinWidth") > 0) {
             configuration.imageMinWidth = options.getInt("imageMinWidth")
@@ -52,8 +52,8 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
         if (options.hasKey("cancelButtonTitle")) {
             configuration.cancelButtonTitle = options.getString("cancelButtonTitle") as String
         }
-        if (options.hasKey("rawButtonTitle")) {
-            configuration.rawButtonTitle = options.getString("rawButtonTitle") as String
+        if (options.hasKey("originalButtonTitle")) {
+            configuration.originalButtonTitle = options.getString("originalButtonTitle") as String
         }
         if (options.hasKey("submitButtonTitle")) {
             configuration.submitButtonTitle = options.getString("submitButtonTitle") as String
@@ -74,7 +74,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
                 for (i in assetList.indices) {
                     val map = Arguments.createMap()
-                    val (path, _, base64, width, height, size, isVideo, isRaw) = assetList[i]
+                    val (path, _, base64, width, height, size, isVideo, isOriginal) = assetList[i]
 
                     map.putString("path", path)
                     map.putString("base64", base64)
@@ -82,7 +82,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
                     map.putInt("width", width)
                     map.putInt("height", height)
                     map.putBoolean("isVideo", isVideo)
-                    map.putBoolean("isRaw", isRaw)
+                    map.putBoolean("isOriginal", isOriginal)
 
                     array.pushMap(map)
                 }

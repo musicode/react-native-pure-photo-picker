@@ -16,16 +16,16 @@ import Photos
     
     @objc public var isVideo: Bool
     
-    @objc public var isRaw: Bool
+    @objc public var isOriginal: Bool
     
-    public init(path: String, base64: String, width: Int, height: Int, size: Int, isVideo: Bool, isRaw: Bool) {
+    public init(path: String, base64: String, width: Int, height: Int, size: Int, isVideo: Bool, isOriginal: Bool) {
         self.path = path
         self.base64 = base64
         self.width = width
         self.height = height
         self.size = size
         self.isVideo = isVideo
-        self.isRaw = isRaw
+        self.isOriginal = isOriginal
     }
     
 }

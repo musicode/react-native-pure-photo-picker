@@ -24,7 +24,7 @@
 		9DE94D00222E4BBD00DE079F /* AssetGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CED222E4BBD00DE079F /* AssetGrid.swift */; };
 		9DE94D01222E4BBD00DE079F /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CEE222E4BBD00DE079F /* TopBar.swift */; };
 		9DE94D02222E4BBD00DE079F /* TitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CEF222E4BBD00DE079F /* TitleButton.swift */; };
-		9DE94D03222E4BBD00DE079F /* RawButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CF0222E4BBD00DE079F /* RawButton.swift */; };
+		9DE94D03222E4BBD00DE079F /* OriginalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CF0222E4BBD00DE079F /* OriginalButton.swift */; };
 		9DE94D04222E4BBD00DE079F /* AlbumList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CF1222E4BBD00DE079F /* AlbumList.swift */; };
 		9DE94D05222E4BBD00DE079F /* PhotoPickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE94CF3222E4BBD00DE079F /* PhotoPickerDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -63,7 +63,7 @@
 		9DE94CED222E4BBD00DE079F /* AssetGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetGrid.swift; sourceTree = "<group>"; };
 		9DE94CEE222E4BBD00DE079F /* TopBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		9DE94CEF222E4BBD00DE079F /* TitleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleButton.swift; sourceTree = "<group>"; };
-		9DE94CF0222E4BBD00DE079F /* RawButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawButton.swift; sourceTree = "<group>"; };
+		9DE94CF0222E4BBD00DE079F /* OriginalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OriginalButton.swift; sourceTree = "<group>"; };
 		9DE94CF1222E4BBD00DE079F /* AlbumList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumList.swift; sourceTree = "<group>"; };
 		9DE94CF3222E4BBD00DE079F /* PhotoPickerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,7 +158,7 @@
 				9DE94CED222E4BBD00DE079F /* AssetGrid.swift */,
 				9DE94CEE222E4BBD00DE079F /* TopBar.swift */,
 				9DE94CEF222E4BBD00DE079F /* TitleButton.swift */,
-				9DE94CF0222E4BBD00DE079F /* RawButton.swift */,
+				9DE94CF0222E4BBD00DE079F /* OriginalButton.swift */,
 				9DE94CF1222E4BBD00DE079F /* AlbumList.swift */,
 			);
 			path = view;
@@ -229,7 +229,7 @@
 				9DE94D00222E4BBD00DE079F /* AssetGrid.swift in Sources */,
 				9DE94D05222E4BBD00DE079F /* PhotoPickerDelegate.swift in Sources */,
 				9DE94D01222E4BBD00DE079F /* TopBar.swift in Sources */,
-				9DE94D03222E4BBD00DE079F /* RawButton.swift in Sources */,
+				9DE94D03222E4BBD00DE079F /* OriginalButton.swift in Sources */,
 				9DE94CF4222E4BBD00DE079F /* PhotoPickerConfiguration.swift in Sources */,
 				9DE94CF9222E4BBD00DE079F /* PickedAsset.swift in Sources */,
 				9DE94D02222E4BBD00DE079F /* TitleButton.swift in Sources */,

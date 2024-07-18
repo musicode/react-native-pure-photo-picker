@@ -186,28 +186,28 @@ import Photos
     //
 
     // 原图按钮的标题字体
-    @objc public var rawButtonTextFont = UIFont.systemFont(ofSize: 13)
+    @objc public var originalButtonTextFont = UIFont.systemFont(ofSize: 13)
 
     // 原图按钮的标题颜色
-    @objc public var rawButtonTextColor = UIColor.white
+    @objc public var originalButtonTextColor = UIColor.white
 
     // 原图按钮的标题到图标的距离
-    @objc public var rawButtonTitleMarginLeft: CGFloat = 6
+    @objc public var originalButtonTitleMarginLeft: CGFloat = 6
 
     // 原图按钮水平内间距，用来扩大点击区域
-    @objc public var rawButtonPaddingHorizontal: CGFloat = 8
+    @objc public var originalButtonPaddingHorizontal: CGFloat = 8
 
     // 原图按钮垂直内间距，用来扩大点击区域
-    @objc public var rawButtonPaddingVertical: CGFloat = 8
+    @objc public var originalButtonPaddingVertical: CGFloat = 8
 
     // 原图按钮未选中时的图片
-    @objc public var rawButtonImageUnchecked = UIImage(named: "photo_picker_raw_button_unchecked")
+    @objc public var originalButtonImageUnchecked = UIImage(named: "photo_picker_original_button_unchecked")
 
     // 原图按钮选中时的图片
-    @objc public var rawButtonImageChecked = UIImage(named: "photo_picker_raw_button_checked")
+    @objc public var originalButtonImageChecked = UIImage(named: "photo_picker_original_button_checked")
 
     // 原图按钮的标题
-    @objc public var rawButtonTitle = "原图"
+    @objc public var originalButtonTitle = "原图"
 
     //
     // MARK: - 确定按钮
@@ -254,7 +254,7 @@ import Photos
     @objc public var imageMinHeight = 0
 
     // 是否显示原图按钮
-    @objc public var rawButtonVisible = true
+    @objc public var showOriginalButton = true
 
     //
     // MARK: - 各种选项
