@@ -42,6 +42,7 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
         configuration.countable = options.getBoolean("countable")
         configuration.maxSelectCount = options.getInt("maxSelectCount")
         configuration.showOriginalButton = options.getBoolean("showOriginalButton")
+        configuration.imageBase64Enabled = options.getBoolean("imageBase64Enabled")
 
         if (options.hasKey("imageMinWidth") && options.getInt("imageMinWidth") > 0) {
             configuration.imageMinWidth = options.getInt("imageMinWidth")
@@ -74,15 +75,15 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
 
                 for (i in assetList.indices) {
                     val map = Arguments.createMap()
-                    val (path, _, base64, width, height, size, isVideo, isOriginal) = assetList[i]
+                    val assetItem = assetList[i]
 
-                    map.putString("path", path)
-                    map.putString("base64", base64)
-                    map.putInt("size", size)
-                    map.putInt("width", width)
-                    map.putInt("height", height)
-                    map.putBoolean("isVideo", isVideo)
-                    map.putBoolean("isOriginal", isOriginal)
+                    map.putString("path", assetItem.path)
+                    map.putString("base64", assetItem.base64)
+                    map.putInt("size", assetItem.size)
+                    map.putInt("width", assetItem.width)
+                    map.putInt("height", assetItem.height)
+                    map.putBoolean("isVideo", assetItem.isVideo)
+                    map.putBoolean("isOriginal", assetItem.isOriginal)
 
                     array.pushMap(map)
                 }

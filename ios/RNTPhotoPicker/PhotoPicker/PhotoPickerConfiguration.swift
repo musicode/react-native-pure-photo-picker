@@ -255,6 +255,9 @@ import Photos
 
     // 是否显示原图按钮
     @objc public var showOriginalButton = true
+    
+    // 是否需要返回 base64 图片
+    @objc public var imageBase64Enabled = true
 
     //
     // MARK: - 各种选项

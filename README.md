@@ -72,6 +72,7 @@ photoPicker.open({
   maxSelectCount: 9,
   countable: true,
   showOriginalButton: true,
+  imageBase64Enabled: true,
 
   // filter image by width and height
   // optional

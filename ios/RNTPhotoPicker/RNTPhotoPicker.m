@@ -54,6 +54,7 @@ RCT_EXPORT_METHOD(open:(NSDictionary*)options
     configuration.countable = [RCTConvert BOOL:options[@"countable"]];
     configuration.maxSelectCount = [RCTConvert int:options[@"maxSelectCount"]];
     configuration.showOriginalButton = [RCTConvert BOOL:options[@"showOriginalButton"]];
+    configuration.imageBase64Enabled = [RCTConvert BOOL:options[@"imageBase64Enabled"]];
 
     int imageMinWidth = [RCTConvert int:options[@"imageMinWidth"]];
     if (imageMinWidth > 0) {

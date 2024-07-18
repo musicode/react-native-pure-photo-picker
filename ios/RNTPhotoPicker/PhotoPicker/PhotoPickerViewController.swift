@@ -322,6 +322,7 @@ public class PhotoPickerViewController: UIViewController {
         
         // 排序完成之后，转成 PickedAsset
         let isOriginalChecked = bottomBar.isOriginalChecked
+        let imageBase64Enabled = configuration.imageBase64Enabled
         
         var count = 0
         let urlPrefix = "file://"
@@ -345,7 +346,7 @@ public class PhotoPickerViewController: UIViewController {
                     
                     item.path = path
                     
-                    if !item.isVideo {
+                    if !item.isVideo && imageBase64Enabled {
                         if let imageData = NSData(contentsOf: URL(fileURLWithPath: path)) {
                             item.base64 = imageData.base64EncodedString()
                         }

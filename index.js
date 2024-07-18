@@ -11,6 +11,7 @@ export default {
    * @property {boolean} options.countable
    * @property {number} options.maxSelectCount
    * @property {boolean} options.showOriginalButton
+   * @property {boolean} options.imageBase64Enabled
    * @property {number} options.imageMinWidth
    * @property {number} options.imageMinHeight
    * @property {string} options.cancelButtonTitle
