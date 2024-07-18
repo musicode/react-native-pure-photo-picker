@@ -254,10 +254,10 @@ import Photos
     @objc public var imageMinHeight = 0
 
     // 是否显示原图按钮
-    @objc public var showOriginalButton = true
+    @objc public var showOriginalButton = false
     
     // 是否需要返回 base64 图片
-    @objc public var imageBase64Enabled = true
+    @objc public var imageBase64Enabled = false
 
     //
     // MARK: - 各种选项

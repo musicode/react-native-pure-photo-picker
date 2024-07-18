@@ -44,11 +44,17 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
         configuration.showOriginalButton = options.getBoolean("showOriginalButton")
         configuration.imageBase64Enabled = options.getBoolean("imageBase64Enabled")
 
-        if (options.hasKey("imageMinWidth") && options.getInt("imageMinWidth") > 0) {
-            configuration.imageMinWidth = options.getInt("imageMinWidth")
+        if (options.hasKey("imageMinWidth")) {
+            val value = options.getInt("imageMinWidth")
+            if (value > 0) {
+                configuration.imageMinWidth = value
+            }
         }
-        if (options.hasKey("imageMinHeight") && options.getInt("imageMinHeight") > 0) {
-            configuration.imageMinHeight = options.getInt("imageMinHeight")
+        if (options.hasKey("imageMinHeight")) {
+            val value = options.getInt("imageMinHeight")
+            if (value > 0) {
+                configuration.imageMinHeight = value
+            }
         }
         if (options.hasKey("cancelButtonTitle")) {
             configuration.cancelButtonTitle = options.getString("cancelButtonTitle") as String

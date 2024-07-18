@@ -70,9 +70,12 @@ import photoPicker from 'react-native-pure-photo-picker'
 photoPicker.open({
 
   maxSelectCount: 9,
+  // optional
   countable: true,
-  showOriginalButton: true,
-  imageBase64Enabled: true,
+  // optional
+  showOriginalButton: false,
+  // optional
+  imageBase64Enabled: false,
 
   // filter image by width and height
   // optional
@@ -88,7 +91,7 @@ photoPicker.open({
   originalButtonTitle: '原图',
 })
 .then(data => {
-  let { path, size, width, height, isOriginal } = data
+  let { path, base64, size, width, height, isOriginal } = data
 
 })
 .catch(() => {
