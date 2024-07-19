@@ -56,6 +56,18 @@ class RNTPhotoPickerModule(private val reactContext: ReactApplicationContext) : 
                 configuration.imageMinHeight = value
             }
         }
+        if (options.hasKey("imageMaxWidth")) {
+            val value = options.getInt("imageMaxWidth")
+            if (value > 0) {
+                configuration.imageMaxWidth = value
+            }
+        }
+        if (options.hasKey("imageMaxHeight")) {
+            val value = options.getInt("imageMaxHeight")
+            if (value > 0) {
+                configuration.imageMaxHeight = value
+            }
+        }
         if (options.hasKey("cancelButtonTitle")) {
             configuration.cancelButtonTitle = options.getString("cancelButtonTitle") as String
         }

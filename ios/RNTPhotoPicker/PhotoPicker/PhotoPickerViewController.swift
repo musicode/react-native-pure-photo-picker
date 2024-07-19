@@ -322,47 +322,19 @@ public class PhotoPickerViewController: UIViewController {
         
         // 排序完成之后，转成 PickedAsset
         let isOriginalChecked = bottomBar.isOriginalChecked
-        let imageBase64Enabled = configuration.imageBase64Enabled
-        
-        var count = 0
-        let urlPrefix = "file://"
-        
+
         var result = [PickedAsset]()
         
         selectedList.forEach { asset in
-            
-            let item = PickedAsset(path: "", base64: "", width: asset.width, height: asset.height, size: 0, isVideo: asset.type == .video, isOriginal: isOriginalChecked)
-            
-            result.append(item)
-            
-            saveToSandbox(asset: asset) { url in
-                count += 1
-                if let url = url {
-                
-                    var path = url.absoluteString
-                    if path.hasPrefix(urlPrefix) {
-                        path = NSString(string: path).substring(from: urlPrefix.count)
-                    }
-                    
-                    item.path = path
-                    
-                    if !item.isVideo && imageBase64Enabled {
-                        if let imageData = NSData(contentsOf: URL(fileURLWithPath: path)) {
-                            item.base64 = imageData.base64EncodedString()
-                        }
-                    }
-                    
-                    let info = try! FileManager.default.attributesOfItem(atPath: path)
-                    if let size = info[FileAttributeKey.size] as? Int {
-                        item.size = size
-                    }
-                    
-                }
 
-                if count == result.count {
-                    DispatchQueue.main.async {
-                        self.delegate.photoPickerDidSubmit(self, assetList: result)
-                    }
+            saveToSandbox(asset: asset, isOriginal: isOriginalChecked) { item in
+                result.append(item)
+                if result.count < selectedList.count {
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.delegate.photoPickerDidSubmit(self, assetList: result)
                 }
             }
             
@@ -370,52 +342,170 @@ public class PhotoPickerViewController: UIViewController {
         
     }
     
-    private func saveToSandbox(asset: Asset, callback: @escaping (URL?) -> Void) {
-        
+    private func isAlphaImage(image: UIImage) -> Bool {
+        guard let alphaInfo = image.cgImage?.alphaInfo else { return false }
+        switch alphaInfo {
+        case .none, .noneSkipLast, .noneSkipFirst:
+          return false
+        default:
+          return true
+        }
+    }
+    
+    private func scaleImage(image: UIImage, size: CGSize, hasAlpha: Bool) -> Data? {
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, 1)
+        image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        guard let newImage = newImage else {
+            return nil
+        }
+        if (hasAlpha) {
+            return newImage.pngData()
+        }
+        return newImage.jpegData(compressionQuality: 1)
+    }
+    
+    private func saveToSandbox(asset: Asset, isOriginal: Bool, callback: @escaping (PickedAsset) -> Void) {
+
         let nativeAsset = asset.asset
-        let nativeIsImage = nativeAsset.mediaType == .image
+        let assetIsImage = nativeAsset.mediaType == .image
+        
+        let imageMaxWidth = configuration.imageMaxWidth
+        let imageMaxHeight = configuration.imageMaxHeight
+        let imageBase64Enabled = configuration.imageBase64Enabled
+
         let nativeResources = PHAssetResource.assetResources(for: nativeAsset)
         
         var outputResources = [PHAssetResource]()
         // 从 nativeResources 过滤出图片，因为 live photo 会包含 mov 视频
         nativeResources.forEach { item in
-            let extname = URL(fileURLWithPath: item.originalFilename).pathExtension
-            if nativeIsImage && extname.uppercased() == "MOV" {
+            let itemType = item.type
+            if assetIsImage && (itemType != .photo && itemType != .fullSizePhoto) {
                 return
             }
             outputResources.append(item)
         }
         
         guard outputResources.count > 0 else {
-            return callback(nil)
+            return
         }
         guard let outputVersion = outputResources.last else {
-            return callback(nil)
+            return
         }
-        
+
         var dirname = NSTemporaryDirectory()
         if !dirname.hasSuffix("/") {
             dirname += "/"
         }
         
-        var extname = URL(fileURLWithPath: outputVersion.originalFilename).pathExtension
+        var extname = URL(fileURLWithPath: outputVersion.originalFilename).pathExtension.lowercased()
         if !extname.isEmpty {
             extname = "." + extname
         }
         
         let path = dirname + UUID().uuidString + extname
         let url = URL(fileURLWithPath: path)
-
+        
         let options = PHAssetResourceRequestOptions()
         options.isNetworkAccessAllowed = true
-        
+                
         PHAssetResourceManager.default().writeData(for: outputVersion, toFile: url, options: options) { error in
-            if error == nil {
-                callback(url)
+            if error != nil {
+                return
+            }
+            
+            var outputPath = path
+            var outputBase64 = ""
+            var outputSize = 0
+            
+            let originalWidth = asset.width
+            let originalHeight = asset.height
+            
+            var outputWidth = originalWidth
+            var outputHeight = originalHeight
+            
+            if assetIsImage {
+
+                var needScaleImage = false
+                if imageMaxWidth > 0 || imageMaxHeight > 0 {
+                    let ratio = Float(originalWidth) / Float(originalHeight)
+                    if imageMaxWidth > 0 && outputWidth > imageMaxWidth {
+                        outputWidth = imageMaxWidth
+                        outputHeight = Int(Float(outputWidth) / ratio)
+                        needScaleImage = true
+                    }
+                    if imageMaxHeight > 0 && outputHeight > imageMaxHeight {
+                        outputHeight = imageMaxHeight
+                        outputWidth = Int(Float(outputHeight) * ratio)
+                        needScaleImage = true
+                    }
+                }
+                
+                // 这 3 种情况需要处理图片
+                if needScaleImage || extname == ".heif" || extname == ".heic" {
+                    
+                    guard let outputImage = UIImage(contentsOfFile: path) else {
+                        return
+                    }
+                    
+                    let isAlphaImage = self.isAlphaImage(image: outputImage)
+                    
+                    var outputData: Data?
+                    if needScaleImage {
+                        guard let newData = self.scaleImage(image: outputImage, size: CGSize(width: outputWidth, height: outputHeight), hasAlpha: isAlphaImage) else {
+                            return
+                        }
+                        outputData = newData
+                    }
+                    else if isAlphaImage {
+                        outputData = outputImage.pngData()
+                    }
+                    else {
+                        outputData = outputImage.jpegData(compressionQuality: 1)
+                    }
+                    
+                    guard let nsData = outputData as NSData? else {
+                        return
+                    }
+                    outputPath = dirname + UUID().uuidString + (isAlphaImage ? ".png" : ".jpg")
+                    if nsData.write(toFile: outputPath, atomically: true) {
+                        if imageBase64Enabled {
+                            outputBase64 = nsData.base64EncodedString()
+                        }
+                        outputSize = nsData.length
+                    }
+                    else {
+                        return
+                    }
+                }
+                else {
+                    
+                    guard let nsData = NSData(contentsOf: url) else {
+                        return
+                    }
+                                              
+                    if imageBase64Enabled {
+                        outputBase64 = nsData.base64EncodedString()
+                    }
+                    outputSize = nsData.length
+                    
+                }
+                
             }
             else {
-                callback(nil)
+                let info = try! FileManager.default.attributesOfItem(atPath: path)
+                guard let size = info[FileAttributeKey.size] as? Int else {
+                    return
+                }
+                outputSize = size
             }
+                                              
+                                              
+            callback(
+                PickedAsset(path: outputPath, base64: outputBase64, width: outputWidth, height: outputHeight, size: outputSize, isVideo: nativeAsset.mediaType == .video, isOriginal: isOriginal)
+            )
+            
         }
         
     }

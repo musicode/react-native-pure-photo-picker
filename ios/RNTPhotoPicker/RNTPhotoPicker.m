@@ -65,6 +65,16 @@ RCT_EXPORT_METHOD(open:(NSDictionary*)options
     if (imageMinHeight > 0) {
         configuration.imageMinHeight = imageMinHeight;
     }
+    
+    int imageMaxWidth = [RCTConvert int:options[@"imageMaxWidth"]];
+    if (imageMaxWidth > 0) {
+        configuration.imageMaxWidth = imageMaxWidth;
+    }
+
+    int imageMaxHeight = [RCTConvert int:options[@"imageMaxHeight"]];
+    if (imageMaxHeight > 0) {
+        configuration.imageMaxHeight = imageMaxHeight;
+    }
 
     NSString *cancelButtonTitle = [RCTConvert NSString:options[@"cancelButtonTitle"]];
     if (cancelButtonTitle != nil) {

@@ -14,6 +14,8 @@ export default {
    * @property {boolean} options.imageBase64Enabled
    * @property {number} options.imageMinWidth
    * @property {number} options.imageMinHeight
+   * @property {number} options.imageMaxWidth
+   * @property {number} options.imageMaxHeight
    * @property {string} options.cancelButtonTitle
    * @property {string} options.originalButtonTitle
    * @property {string} options.submitButtonTitle

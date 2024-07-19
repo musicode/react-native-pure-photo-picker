@@ -250,8 +250,14 @@ import Photos
     // 图片的最小宽度
     @objc public var imageMinWidth = 0
 
-    // 图片的最大高度
+    // 图片的最小高度
     @objc public var imageMinHeight = 0
+    
+    // 图片的最大宽度，选中的图片如果超过此宽度，会进行压缩
+    @objc public var imageMaxWidth = 0
+
+    // 图片的最大高度，选中的图片如果超过此高度，会进行压缩
+    @objc public var imageMaxHeight = 0
 
     // 是否显示原图按钮
     @objc public var showOriginalButton = false

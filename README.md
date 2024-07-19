@@ -77,11 +77,17 @@ photoPicker.open({
   // optional
   imageBase64Enabled: false,
 
-  // filter image by width and height
+  // filter image if image size is less than the min size
   // optional
   imageMinWidth: 100,
   // optional
   imageMinHeight: 100,
+
+  // compress image if image size is greater than the max size
+  // optional
+  imageMaxWidth: 0,
+  // optional
+  imageMaxHeight: 0,
 
   // optional
   submitButtonTitle: '确定',
